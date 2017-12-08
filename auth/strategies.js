@@ -1,4 +1,3 @@
-'use strict';
 const { Strategy: LocalStrategy } = require('passport-local');
 
 // Assigns the Strategy export to the name JwtStrategy using object destructuring
@@ -10,7 +9,9 @@ const { JWT_SECRET } = require('../config');
 
 const localStrategy = new LocalStrategy((username, password, callback) => {
   let user;
-  User.findOne({ username: username })
+  console.log(username);
+  console.log(password);
+  User.findOne({ username })
     .then(_user => {
       user = _user;
       if (!user) {
@@ -18,21 +19,23 @@ const localStrategy = new LocalStrategy((username, password, callback) => {
         // Any errors like this will be handled in the catch block.
         return Promise.reject({
           reason: 'LoginError',
-          message: 'Incorrect username or password'
+          message: 'Incorrect username or password',
         });
       }
       return user.validatePassword(password);
     })
     .then(isValid => {
+      console.log(isValid);
       if (!isValid) {
         return Promise.reject({
           reason: 'LoginError',
-          message: 'Incorrect username or password'
+          message: 'Incorrect username or password',
         });
       }
       return callback(null, user);
     })
     .catch(err => {
+      console.log(err);
       if (err.reason === 'LoginError') {
         return callback(null, false, err);
       }
@@ -46,11 +49,11 @@ const jwtStrategy = new JwtStrategy(
     // Look for the JWT as a Bearer auth header
     jwtFromRequest: ExtractJwt.fromAuthHeaderWithScheme('Bearer'),
     // Only allow HS256 tokens - the same as the ones we issue
-    algorithms: ['HS256']
+    algorithms: ['HS256'],
   },
   (payload, done) => {
     done(null, payload.user);
-  }
+  },
 );
 
 module.exports = { localStrategy, jwtStrategy };
