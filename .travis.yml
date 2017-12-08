@@ -1,0 +1,11 @@
+language: node_js
+node_js: node
+services:
+- mongodb
+deploy:
+  provider: heroku
+  api_key:
+    secure: BE2TGr4DGPebnFJDFjYmVdXnWbr5qLcDak86bcJ8kWKNs7favCFbRMvuKQhs86998mRVODPomP+TyMfzpUmyZBK8z8N/6QR2ISIO5er5icdjSuYW3urn0OC7GbCx2zHTyxouPmvG6v3mQglhhDXwonRz2oYV4XV9Akz1Yr7cWSs2cBcWu/QkY1uRFatn6gJUUB+UkBalG/qKmVknaweY63bmWoEHGFeFIHh4rT6V7XhQSODoRWJ+HOEczznypGs85QyauL0X2iRRYkC7Fqq31t4KD2Q7AjHsAM3OO70IKB7KjTPzgsKO/dvRaYhF/yyV0l8VGlmTjFmIxWYcTl33E0YgsMhz3uksVLa69pkW9GCvzrKSMHGIOZl77bvUvf6ja0Ud9xGNxV/HuAZI9lelvJSanfFIKTIsD9Obz5phJkyIjBsina5QAJNQB01SZVXhJR6kTS0E/wb72OAJYYlAy98EBXWacKB7OK+C/P7Cv5C7g8Dq3YeFZKnj+/Wdh8Ux7CElQCMakVFbGsbTAJ+nCvFFhHaSNTZXoVx86lM/z8YefjoSHE5ajsdpmRL1wWDWSk/Rt20CApn86NsftTUeQdrmMMnJBSdRyXwALcD2JCRaBH7UCDCy1PwLV9K6xnekv1E82wKOTM+w3gb92HFQ+r4GMnBCukD0E9nB4N5+F/E=
+  app: agile-cliffs-21122
+  on:
+    repo: brootroot/gitfit-api
