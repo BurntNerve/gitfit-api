@@ -18,10 +18,7 @@ const createAuthToken = function (user) {
 
 const localAuth = passport.authenticate('local', { session: false });
 router.use(bodyParser.json());
-// The user provides a username and password to login
 router.post('/login', localAuth, (req, res) => {
-  console.log('this is it');
-  console.log(req.body);
   const authToken = createAuthToken(req.user.apiRepr());
   const userInfo = req.user.apiRepr();
   res.json({ authToken, userInfo });
@@ -33,15 +30,9 @@ router.post('/addWorkout', (req, res) => {
     { username },
     { $push: { workouts: req.body.newWorkout } },
     (err, docs) => {
-      console.log('update error.');
-      console.log(err);
       User.findOne({ username }, (error, documents) => {
         const authToken = createAuthToken(documents.apiRepr());
-        console.log(authToken);
-        console.log(documents.apiRepr());
         res.json({ authToken });
-        console.log('find error.');
-        console.log(err);
       });
     },
   );
@@ -50,7 +41,6 @@ router.post('/addWorkout', (req, res) => {
 router.post('/updateWeight', (req, res) => {
   let updatedWorkout;
   const { username, bodyWeight } = req.body;
-  console.log(req.body);
   User.findOne({ username }, (err, docs) => {
     updatedWorkout = Object.assign(
       {},
@@ -65,7 +55,6 @@ router.post('/updateWeight', (req, res) => {
       { workouts: updatedWorkouts },
       (error, documents) => {
         User.findOne({ username }, (err, docs) => {
-          // res.status(201).send(docs);
           const authToken = createAuthToken(docs.apiRepr());
           res.json({ authToken });
         });
@@ -75,18 +64,15 @@ router.post('/updateWeight', (req, res) => {
 });
 
 router.post('/deleteWorkout', (req, res) => {
-  //
   const { logIndex, username } = req.body;
   User.findOne({ username }, (err, docs) => {
     docs.workouts.splice(logIndex, 1);
     const updatedWorkouts = docs.workouts;
-    // res.status(201).send(updatedWorkouts);
     User.findOneAndUpdate(
       { username },
       { workouts: updatedWorkouts },
       (error, documents) => {
         User.findOne({ username }, (err, docs) => {
-          // res.status(201).send(docs);
           const authToken = createAuthToken(docs.apiRepr());
           res.json({ authToken });
         });
@@ -96,11 +82,7 @@ router.post('/deleteWorkout', (req, res) => {
 });
 
 router.post('/updateWorkout', (req, res) => {
-  //
   const { update, logIndex, username } = req.body;
-  // console.log(update);
-  // console.log(logIndex);
-  // res.sendStatus(201);
   User.findOne({ username }, (err, docs) => {
     const updatedWorkouts = docs.workouts.map((workout, index) => {
       if (index !== Number(logIndex)) {
@@ -113,7 +95,6 @@ router.post('/updateWorkout', (req, res) => {
       { workouts: updatedWorkouts },
       (error, documents) => {
         User.findOne({ username }, (err, docs) => {
-          // res.status(201).send(docs);
           const authToken = createAuthToken(docs.apiRepr());
           res.json({ authToken });
         });
@@ -124,7 +105,6 @@ router.post('/updateWorkout', (req, res) => {
 
 const jwtAuth = passport.authenticate('jwt', { session: false });
 
-// The user exchanges a valid JWT for a new one with a later expiration
 router.post('/refresh', jwtAuth, (req, res) => {
   const authToken = createAuthToken(req.user);
   res.json({ authToken });

@@ -9,9 +9,6 @@ const { JWT_SECRET } = require('../config');
 
 const expect = chai.expect;
 
-// This let's us make HTTP requests
-// in our tests.
-// see: https://github.com/chaijs/chai-http
 chai.use(chaiHttp);
 
 describe('Protected endpoint', () => {
@@ -94,7 +91,7 @@ describe('Protected endpoint', () => {
             goalWeight,
             workouts,
           },
-          exp: Math.floor(Date.now() / 1000) - 10, // Expired ten seconds ago
+          exp: Math.floor(Date.now() / 1000) - 10,
         },
         JWT_SECRET,
         {
@@ -117,40 +114,5 @@ describe('Protected endpoint', () => {
           expect(res).to.have.status(401);
         });
     });
-    // it('Should send protected data', () => {
-    //   const token = jwt.sign(
-    //     {
-    //       user: {
-    //         username,
-    //         fullName,
-    //         currentWeight,
-    //         goalWeight,
-    //         workouts,
-    //       },
-    //     },
-    //     JWT_SECRET,
-    //     {
-    //       algorithm: 'HS256',
-    //       subject: username,
-    //       expiresIn: '7d',
-    //     },
-    //   );
-    //
-    //   return chai
-    //     .request(app)
-    //     .get('/api/protected')
-    //     .set('authorization', `Bearer ${token}`)
-    //     .then(res => {
-    //       expect(res).to.have.status(200);
-    //       expect(res.body).to.be.an('object');
-    //       expect(res.body.data).to.equal({
-    //         username: 'exampleUser',
-    //         fullName: 'example name',
-    //         currentWeight: '175',
-    //         goalWeight: '190',
-    //         workouts: [],
-    //       });
-    //     });
-    // });
   });
 });
